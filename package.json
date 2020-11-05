@@ -1,0 +1,25 @@
+{
+  "name": "thunderpledge_backend",
+  "version": "1.0.0",
+  "description": "The Thunderpledge v1 backend api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisBarnes01/thunderpledge-backend.git"
+  },
+  "author": "Chris Barnes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrisBarnes01/thunderpledge-backend/issues"
+  },
+  "homepage": "https://github.com/ChrisBarnes01/thunderpledge-backend#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase": "^8.0.0",
+    "nodemailer": "^6.4.14"
+  }
+}
