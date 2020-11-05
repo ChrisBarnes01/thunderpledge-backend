@@ -32,12 +32,7 @@ var transporter = nodemailer.createTransport({
     }
   });
   
-
 var app = express()
-
-app.get('/hello', function(req, res){
-    res.json({hello: process.env.pass})
-})
 
 //getPledgeInfo API
 app.get('/getPledgeInfo/:id', function(req, res){
@@ -67,34 +62,33 @@ app.post('/submitTransaction/:firstName/:lastName/:email/:pledge_id', function(r
     upvotesRef.transaction(function (current_value) {
         return (current_value || 0) + 1;
     });
-    
     var postsRef = database.ref("pledges/" + pledge_id + "/transactions");  
 
-    //3 Push transaction record to ref
+    //2 Push transaction record to ref
     var newTransaction = postsRef.push({
         firstName: firstName,
         lastName: lastName,
         email: email
       });
 
-    //2 check if pledge count met - if so, then email folks 
-    //just assume that pledge met;
-    if (true){
-        postsRef.on("value", function(snapshot) {
-            var idObject = snapshot.val()
-            for (var transaction of Object.keys(idObject)){
-                var email = idObject[transaction]["email"];
-                console.log(email)
-                var message = "hi " + idObject[transaction][firstName] + " we hit our goal."
-                sendMessage(email, message);
-            }
+    //3 check if pledge count met - if so, then email folks 
+    //ignore condition for testing purposes rn
+        if (false){
+            postsRef.on("value", function(snapshot) {
+                var idObject = snapshot.val()
+                for (var transaction of Object.keys(idObject)){
+                    var email = idObject[transaction]["email"];
+                    console.log(email)
+                    var message = "hi " + idObject[transaction][firstName] + " we hit our goal."
+                    sendMessage(email, message);
+                }
+                res.json({transaction_id: newTransaction.key});
+            })
+        }
+        else{
+            //return something
             res.json({transaction_id: newTransaction.key});
-        })
-    }
-    else{
-        //return something
-        res.json({transaction_id: newTransaction.key});
-    }
+        }
 })
 
 //GET TRANSACTION INFO
@@ -116,8 +110,6 @@ app.get('/getTransactionInfo/:pledge_id/:transaction_id', function(req, res){
         res.json({error: "the read failed " + errorObject.code});
       });
 })
-
-
 
 function sendMessage(toEmail, message){
     var mailOptions = {
